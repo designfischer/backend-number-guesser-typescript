@@ -11,21 +11,36 @@ function generateRandomNumberFrom0To10() {
     const generatedNumber = Math.floor(Math.random() * 11)
     return generatedNumber
 }  
+
+interface responseData {
+    won: Boolean,
+    message: string
+}
  
 app.post('/number', (req, res) => {
 
     const guessedNumber: number = req.body.number
     const generatedNumber = generateRandomNumberFrom0To10()
 
-    let returnMessage: string = ''
+    let responseData: responseData = {} as responseData
 
     if (guessedNumber === generatedNumber) {
-        returnMessage = `Você acertou! O número correto é ${generatedNumber}`
+        responseData = {
+            won: true,
+            message: `Você acertou! O número correto é ${generatedNumber}`
+        }
+
     } else {
-        returnMessage = `Você errou! O número correto era ${generatedNumber}`
+        responseData = {
+            won: false,
+            message: `Você errou! O número correto é ${generatedNumber}`
+        }
     }
 
-    res.status(200).json({ message: returnMessage })
+    res.status(200).json({ 
+        status: 200,
+        data: responseData
+    })
 
 })
 
